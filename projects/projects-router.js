@@ -2,45 +2,67 @@ const express = require('express');
 const Projects = require('./projects-model.js');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+// get all projects
+router.get('/projects', async (req, res) => {
     try {
-      const recipes = await Recipes.getRecipes();
-      res.json(recipes);
+      const projects = await Projects.getProjects();
+      res.json(projects);
     } catch (err) {
-      res.status(500).json({ message: 'Failed to get recipes' });
+      res.status(500).json({ message: 'Failed to get projects' });
     }
   });
 
-router.get('/:id/shoppingList', async (req, res) => {
-    const { id } = req.params;
-
+// Post a project
+router.post('/projects', async (req, res) => {
+    const projectData = req.body;
     try {
-      const recipes = await Recipes.getShoppingList(id);
-
-      if (recipes) {
-        res.status(200).json(recipes);
-      } else {
-        res.status(404).json({ message: 'Could not find recipes' })
-      }
+      const project = await Projects.addProject(projectData);
+      res.status(201).json(project);
     } catch (err) {
-      res.status(500).json({ message: 'Failed to get recipes' });
+      res.status(500).json({ message: 'Failed to create new project' });
     }
   });
 
-  router.get('/:id/instructions', async (req, res) => {
-    const { id } = req.params;
-
+// Get Resources
+router.get('/resources', async (req, res) => {
     try {
-      const recipes = await Recipes.getInstructions(id);
-
-      if (recipes) {
-        res.status(200).json(recipes);
-      } else {
-        res.status(404).json({ message: 'Could not find recipes' })
-      }
+      const resources = await Projects.getResources();
+      res.json(resources);
     } catch (err) {
-      res.status(500).json({ message: 'Failed to get recipes' });
+      res.status(500).json({ message: 'Failed to get resources' });
     }
   });
 
+// Post Resources
+router.post('/resources', async (req, res) => {
+    const resourceData = req.body;
+    try {
+      const resource = await Projects.addResource(resourceData);
+      res.status(201).json(resource);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to create new resource' });
+    }
+  });
+
+// Get Tasks
+router.get('/tasks', async (req, res) => {
+
+    try {
+      const tasks = await Projects.getTasks();
+      res.json(tasks);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to get tasks' });
+    }
+  });
+
+// Post Task
+router.post('/tasks', async (req, res) => {
+    const taskData = req.body;
+    try {
+      const task = await Projects.addTask(taskData);
+      res.status(201).json(task);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to create new task' });
+    }
+  });
 module.exports = router;

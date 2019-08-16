@@ -5,6 +5,6 @@ const server = express();
 
 server.use(helmet());
 server.use(express.json());
-server.use('/api/projects', ProjectsRouter)
+server.use('/api', ProjectsRouter)
 
 module.exports = server;
